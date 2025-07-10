@@ -30,4 +30,4 @@ jobs:
           context: .
           push: true
           file: Containerfile
-          tags: ghcr.io/renox-1/renox-dev:latest
+          tags: ghcr.io/renox-1/blog-renox-dev:latest
