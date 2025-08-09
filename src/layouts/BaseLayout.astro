@@ -1,0 +1,98 @@
+---
+const { title = "Blog | Benjamin Malek" } = Astro.props;
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import "../styles/global.css"
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-gray-950 text-gray-100 font-sans relative overflow-x-hidden">
+    <!-- Starfield Canvas Background -->
+    <canvas id="stars-bg" class="fixed inset-0 -z-10 w-full h-full"></canvas>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded shadow-md
+             opacity-0 pointer-events-none transition-opacity duration-500 z-50 hidden"
+    >
+      📋 Email copied to clipboard!
+    </div>
+
+    <!-- Main Page Content -->
+    <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <Header title="blog.renox.dev" />
+      <main class="my-8 space-y-12 px-2 sm:px-6">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Twinkling Stars Background
+      window.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('stars-bg');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+
+        function resizeCanvas() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          stars = Array.from({ length: 120 }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 1.5 + 0.5,
+            alpha: Math.random(),
+            delta: (Math.random() * 0.01) + 0.001
+          }));
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+          for (const star of stars) {
+            star.alpha += star.delta;
+            if (star.alpha >= 1 || star.alpha <= 0) {
+              star.delta *= -1;
+            }
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+            ctx.globalAlpha = Math.max(0, Math.min(1, star.alpha));
+            ctx.fillStyle = 'white';
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(animate);
+        }
+
+        resizeCanvas();
+        animate();
+        window.addEventListener('resize', resizeCanvas);
+      });
+
+      // Toast Notification Function
+      window.showToast = function () {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+
+        toast.classList.remove('hidden', 'opacity-0');
+        toast.classList.add('opacity-100');
+
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0');
+        }, 2000);
+
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2500);
+      };
+    </script>
+  </body>
+</html>

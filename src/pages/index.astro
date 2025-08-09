@@ -1,0 +1,11 @@
+---
+import "../styles/global.css"
+import BaseLayout from "../layouts/BaseLayout.astro"
+import PostPreview from "../components/PostPreview.astro"
+import { getCollection } from 'astro:content';
+const allPosts = await getCollection('posts');
+allPosts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+---
+<BaseLayout>
+	{allPosts.map((post: any) => <PostPreview title={post.data.title} snippet={post.data.snippet} tags={post.data.tags} link={`/${post.id}`} />)}
+</BaseLayout>

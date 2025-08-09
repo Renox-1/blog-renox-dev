@@ -1,0 +1,45 @@
+---
+// src/layouts/MarkdownLayout.astro
+const { frontmatter } = Astro.props;
+import BaseLayout from "./BaseLayout.astro";
+import "../styles/global.css"
+
+const title = frontmatter.title ?? "";
+const author = frontmatter.author ?? "Benjamin Malek";
+const date = frontmatter.date ? new Date(frontmatter.date) : null;
+const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [];
+---
+
+<BaseLayout>
+  <article
+    class="prose prose-invert max-w-none">
+    <header class="not-prose mb-8 border-b border-gray-800 pb-6">
+      <h1 class="text-3xl font-extrabold tracking-tight text-white">{title}</h1>
+
+      <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+        <span class="inline-flex items-center gap-2">
+          <svg class="h-4 w-4 opacity-70" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a2 2 0 0 1 2 2v2H5V4a2 2 0 0 1 2-2zm12 8V8H5v2h14zm0 2H5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6z"/></svg>
+          {date ? date.toLocaleDateString() : "Undated"}
+        </span>
+        <span class="opacity-50">•</span>
+        <span>By {author}</span>
+
+        {tags.length > 0 && (
+          <>
+            <span class="opacity-50">•</span>
+            <div class="flex flex-wrap gap-2">
+              {tags.map((t: string) => (
+                <span class="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-blue-300">
+                  #{t}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </header>
+
+    <slot />
+
+  </article>
+</BaseLayout>

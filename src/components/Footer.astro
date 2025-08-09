@@ -1,0 +1,14 @@
+---
+import "../styles/global.css";
+---
+<footer class="py-10 text-center text-gray-500 text-sm border-t mt-12 space-y-2">
+  <div>&copy; {new Date().getFullYear()} Benjamin Malek. All rights reserved.</div>
+  <div>
+    📫 <span 
+      class="cursor-pointer hover:text-blue-400 transition"
+      onclick="navigator.clipboard.writeText('ben@renox.dev'); showToast()"
+    >
+      ben@renox.dev
+    </span>
+  </div>
+</footer>

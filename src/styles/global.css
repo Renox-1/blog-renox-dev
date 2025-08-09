@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+
+/* Font + smoothing */
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font-sans); }
+
+/* --- Prose (Markdown) tweaks for dark theme --- */
+.prose {
+  /* Make text a touch brighter in dark mode */
+  --tw-prose-body: theme(colors.gray.300);
+  --tw-prose-headings: theme(colors.gray.100);
+  --tw-prose-links: theme(colors.blue.400);
+  --tw-prose-bold: theme(colors.gray.100);
+  --tw-prose-counters: theme(colors.gray.400);
+  --tw-prose-bullets: theme(colors.gray.400);
+  --tw-prose-hr: theme(colors.gray.800);
+  --tw-prose-quotes: theme(colors.gray.100);
+  --tw-prose-quote-borders: theme(colors.gray.700);
+  --tw-prose-captions: theme(colors.gray.400);
+  --tw-prose-code: theme(colors.gray.100);
+  --tw-prose-pre-code: theme(colors.gray.100);
+  --tw-prose-pre-bg: theme(colors.gray.900);
+  --tw-prose-th-borders: theme(colors.gray.700);
+  --tw-prose-td-borders: theme(colors.gray.800);
+}
+
+/* Code blocks: make them clean, scrollable, and compact */
+.prose pre {
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow-x: auto;
+}
+.prose pre code {
+  display: block;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Inline code: subtle pill */
+.prose :not(pre) > code {
+  background: rgba(148,163,184,0.1); /* slate-400/10 */
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(148,163,184,0.2);
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left-color: rgb(75 85 99 / 0.6); /* gray-600 */
+  background: rgba(31,41,55,0.45); /* gray-800/45 */
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.75rem;
+}
+
+/* Tables */
+.prose table {
+  @apply w-full text-sm;
+}
+.prose thead th {
+  @apply bg-gray-900/60 font-semibold;
+}
+.prose tbody tr {
+  @apply border-b border-gray-800/80;
+}
+
+/* Images in posts */
+.prose img {
+  @apply mx-auto shadow;
+}
+
+/* Headings spacing */
+.prose h2, .prose h3 { scroll-margin-top: 6rem; }
+
+/* Optional: add a subtle hover anchor feel to headings with IDs */
+.prose :is(h2,h3,h4)[id]::after {
+  content: " #";
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  color: rgb(96 165 250); /* blue-400 */
+}
+.prose :is(h2,h3,h4)[id]:hover::after { opacity: 1; }
+
+/* remove the decorative backticks Tailwind Typography adds to inline code */
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none !important;
+}
